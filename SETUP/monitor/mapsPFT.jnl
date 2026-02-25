@@ -1,0 +1,84 @@
+!! ANNUAL MEAN MAPS FERRET SCRIPT FOR PFTs !!
+
+! FERRET script for creating annual mean maps for PFTs
+! The first parameter passed to the script is the directory, second is the run identifier, third is the year
+
+use /gpfs/data/greenocean/software/resources/breakdown/basin_mask.nc
+use ($1)/($2)/ORCA2_1m_($3)0101_($3)1231_ptrc_T.nc
+
+let land_mask = IF area[d=1] GT 0 THEN 1
+
+!! PHYTOPLANKTON !!
+! COC
+let coc_ave = COC[d=2, k=1, l=@ave]
+let/title="COC [umol/L]" masked = coc_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,5,0.25)(inf) masked
+frame/file=$2_$3_coc.gif
+
+! DIA
+let dia_ave = DIA[d=2, k=1, l=@ave]
+let/title="DIA [umol/L]" masked = dia_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,5,0.25)(inf) masked
+frame/file=$2_$3_dia.gif
+
+! FIX
+let fix_ave = FIX[d=2, k=1, l=@ave]
+let/title="FIX [umol/L]" masked = fix_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,5,0.25)(inf) masked
+frame/file=$2_$3_fix.gif
+
+! MIX
+let mix_ave = MIX[d=2, k=1, l=@ave]
+let/title="MIX [umol/L]" masked = mix_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,5,0.25)(inf) masked
+frame/file=$2_$3_mix.gif
+
+! PHA
+let pha_ave = PHA[d=2, k=1, l=@ave]
+let/title="PHA [umol/L]" masked = pha_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,5,0.25)(inf) masked
+frame/file=$2_$3_pha.gif
+
+! PIC
+let pic_ave = PIC[d=2, k=1, l=@ave]
+let/title="PIC [umol/L]" masked = pic_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,5,0.25)(inf) masked
+frame/file=$2_$3_pic.gif
+
+
+!! ZOOPLANKTON
+! BAC
+let bac_ave = BAC[d=2, k=1, l=@ave]
+let/title="BAC [umol/L]" masked = bac_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,5,0.25)(inf) masked
+frame/file=$2_$3_bac.gif
+
+! GEL
+let gel_ave = GEL[d=2, k=1, l=@ave]
+let/title="GEL [umol/L]" masked = gel_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,5,0.25)(inf) masked
+frame/file=$2_$3_gel.gif
+
+! CRU
+let cru_ave = CRU[d=2, k=1, l=@ave]
+let/title="CRU [umol/L]" masked = cru_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,5,0.25)(inf) masked
+frame/file=$2_$3_cru.gif
+
+! MES
+let mes_ave = MES[d=2, k=1, l=@ave]
+let/title="MES [umol/L]" masked = mes_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,5,0.25)(inf) masked
+frame/file=$2_$3_mes.gif
+
+! PRO
+let pro_ave = PRO[d=2, k=1, l=@ave]
+let/title="PRO [umol/L]" masked = pro_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,5,0.25)(inf) masked
+frame/file=$2_$3_pro.gif
+
+! PTE
+let pte_ave = PTE[d=2, k=1, l=@ave]
+let/title="PTE [umol/L]" masked = pte_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,5,0.25)(inf) masked
+frame/file=$2_$3_pte.gif

@@ -1,0 +1,115 @@
+# Parameters for breaking down the run into outputs
+# If a breakdown_parms file exists (exact name used), it will be used; otherwise the default file in analyseRun will be copied in
+# Last edited: 31/01/2023
+
+# # The masks, containing volume and areas for each pixel 
+BasinMask:/gpfs/data/greenocean/software/resources/breakdown/basin_mask.nc
+WOAMask:/gpfs/data/greenocean/software/resources/breakdown/WOAmask.nc
+RegionMask:/gpfs/data/greenocean/software/resources/breakdown/clq_basin_masks_ORCA.nc
+RECCAPmask:/gpfs/data/greenocean/software/resources/breakdown/RECCAP2_region_masks_all_v20210412_ORCA.nc
+Meshmask:/gpfs/data/greenocean/software/resources/breakdown/mesh_mask3_6_low_res.nc
+AncillaryData:/gpfs/data/greenocean/software/resources/breakdown/AncillaryData_v2.nc
+
+# # List of variables to be totalled over globe
+# # Unit options: PgCarbonPerYr, TgCarbonPerYr, TmolPerYr, TgPerYr, PgPerYr, PerYr, u/L, PgCarbon, Conc->PgCarbon
+# # Units act as multipliers
+
+# # Surface:<var>,<units>,<-lon:+lon>,<-lat:+lat>,<key>
+# # Level:<var>,<index of level>,<units>,<-lon:+lon>,<-lat:+lat>,<key>
+# # Volume:<var>,<start level>,<stop level (inc)>,<units>,<-lon:+lon>,<-lat:+lat>,<key>
+# # Integration:<var>,<units>,<-lon:+lon>,<-lat:+lat>,<key>
+# # Average:<var>,<start level>,<stop level (inc)>,<units>,<-lon:+lon>,<-lat:+lat>,<key>
+# # Observations:<obs data>,<obs var>,<model var>,<depth obs>,<depth model>,<-lon:+lon>,<-lat:+lat>,<key>
+# # Map:<var>,<level, 0-30 or 'all'>
+
+# # To run for a predefined region, replace lon/lats with "Region" and the number:
+# # <class>:<var>,<units>,Region,<number>,<key>
+# # Regions: 0 (Arctic), 1 (North Atlantic), 2 (North Pacific), 3 (North Equatorial), 4 (Equatorial)
+# #          5 (South Equatorial), 6 (Southern Ocean Atlantic), 7 (SO Pacific), 8 (SO Indian)
+
+## SURFACE ##
+Surface:Cflx,PgCarbonPerYr,-180;180,-90;90,total
+Surface:Cflx,PgCarbonPerYr,-180;180,45;90,Reg_1
+Surface:Cflx,PgCarbonPerYr,-180;180,15;45,Reg_2
+Surface:Cflx,PgCarbonPerYr,-180;180,-15;15,Reg_3
+Surface:Cflx,PgCarbonPerYr,-180;180,-45;-15,Reg_4
+Surface:Cflx,PgCarbonPerYr,-180;180,-90;-45,Reg_5
+
+## AVERAGE ##
+Avg:TChl,0,0,u/L,-180;180,-90;90,total
+Avg:TChl,0,0,u/L,-180;180,45;90,Reg_1
+Avg:TChl,0,0,u/L,-180;180,15;45,Reg_2
+Avg:TChl,0,0,u/L,-180;180,-15;15,Reg_3
+Avg:TChl,0,0,u/L,-180;180,-45;-15,Reg_4
+Avg:TChl,0,0,u/L,-180;180,-90;-45,Reg_5
+
+Avg:PO4,0,0,u/L,-180;180,-90;90,total
+Avg:NO3,0,0,u/L,-180;180,-90;90,total
+Avg:Fer,0,0,u/L,-180;180,-90;90,total
+Avg:Si,0,0,u/L,-180;180,-90;90,total
+Avg:O2,0,0,u/L,-180;180,-90;90,total
+
+Avg:tos,0,0,1,-180;180,-90;90,total
+Avg:tos,0,0,1,-180;180,45;90,Reg_1
+Avg:tos,0,0,1,-180;180,15;45,Reg_2
+Avg:tos,0,0,1,-180;180,-15;15,Reg_3
+Avg:tos,0,0,1,-180;180,-45;-15,Reg_4
+Avg:tos,0,0,1,-180;180,-90;-45,Reg_5
+
+Avg:sos,0,0,1,-180;180,-90;90,total
+Avg:sos,0,0,1,-180;180,45;90,Reg_1
+Avg:sos,0,0,1,-180;180,15;45,Reg_2
+Avg:sos,0,0,1,-180;180,-15;15,Reg_3
+Avg:sos,0,0,1,-180;180,-45;-15,Reg_4
+Avg:sos,0,0,1,-180;180,-90;-45,Reg_5
+
+Avg:mldr10_1,0,0,1,-180;180,-90;90,total
+Avg:mldr10_1,0,0,1,-180;180,45;90,Reg_1
+Avg:mldr10_1,0,0,1,-180;180,15;45,Reg_2
+Avg:mldr10_1,0,0,1,-180;180,-15;15,Reg_3
+Avg:mldr10_1,0,0,1,-180;180,-45;-15,Reg_4
+Avg:mldr10_1,0,0,1,-180;180,-90;-45,Reg_5
+
+Avg:pCO2,0,0,1,-180;180,-90;90,total
+Avg:pCO2,0,0,1,-180;180,45;90,Reg_1
+Avg:pCO2,0,0,1,-180;180,15;45,Reg_2
+Avg:pCO2,0,0,1,-180;180,-15;15,Reg_3
+Avg:pCO2,0,0,1,-180;180,-45;-15,Reg_4
+Avg:pCO2,0,0,1,-180;180,-90;-45,Reg_5
+
+## VOLUME ##
+Volume:PPT,PgCarbonPerYr,-180;180,-90;90,total
+
+Volume:proara,PgCarbonPerYr,-180;180,-90;90,total
+Volume:prococ,PgCarbonPerYr,-180;180,-90;90,total
+Volume:probsi,PgCarbonPerYr,-180;180,-90;90,total
+
+Volume:GRAGEL,PgCarbonPerYr,-180;180,-90;90,total
+Volume:GRACRU,PgCarbonPerYr,-180;180,-90;90,total
+Volume:GRAMES,PgCarbonPerYr,-180;180,-90;90,total
+Volume:GRAPRO,PgCarbonPerYr,-180;180,-90;90,total
+Volume:GRAPTE,PgCarbonPerYr,-180;180,-90;90,total
+
+## INTEGRATION ##
+Integration:BAC,0,15,Conc->PgCarbon,-180;180,-90;90,global
+Integration:COC,0,15,Conc->PgCarbon,-180;180,-90;90,global
+Integration:DIA,0,15,Conc->PgCarbon,-180;180,-90;90,global
+Integration:FIX,0,15,Conc->PgCarbon,-180;180,-90;90,global
+Integration:GEL,0,15,Conc->PgCarbon,-180;180,-90;90,global
+Integration:CRU,0,15,Conc->PgCarbon,-180;180,-90;90,global
+Integration:MES,0,15,Conc->PgCarbon,-180;180,-90;90,global
+Integration:MIX,0,15,Conc->PgCarbon,-180;180,-90;90,global
+Integration:PHA,0,15,Conc->PgCarbon,-180;180,-90;90,global
+Integration:PIC,0,15,Conc->PgCarbon,-180;180,-90;90,global
+Integration:PRO,0,15,Conc->PgCarbon,-180;180,-90;90,global
+Integration:PTE,0,15,Conc->PgCarbon,-180;180,-90;90,global
+
+## LEVEL ##
+Level:EXP,10,PgCarbonPerYr,-180;180,-90;90,total
+Level:ExpARA,10,PgCarbonPerYr,-180;180,-90;90,total
+Level:ExpCO3,10,PgCarbonPerYr,-180;180,-90;90,total
+Level:sinksil,10,PgCarbonPerYr,-180;180,-90;90,total
+
+
+## USER ADDED BREAKDOWNS ##
+

@@ -1,0 +1,11 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ PlankTOM12 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~ with three-parameter PFT growth, silica update & ~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~ sedimentation model ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To run use:
+setUpRun.sh
+setUpData_GROW.dat
+
+Updated by P.Townsend 14/04/2023
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

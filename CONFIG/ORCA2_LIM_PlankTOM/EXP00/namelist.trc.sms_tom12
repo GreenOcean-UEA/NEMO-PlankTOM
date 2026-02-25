@@ -1,0 +1,265 @@
+!!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+!! PlankTOM (key_planktom) reference namelist 
+!!
+!!            &natdet           : particulate aggregation parameters
+!!            &natriv           : river elemental input parameters
+!!            &natfer           : iron model parameters
+!!            &natpre           : preference for food parameters (including for bacteria)
+!!            &natzoo           : biological parameters related to heterotrophs
+!!            &natphy           : biological parameters related to phyto
+!!            &natpft           : biological parameters related to all PFTs
+!!            &natquo           : iron quota model parameters
+!!            &natlit           : light-iron model parameters
+!!            &natzca           : additional calcite and aragonite parameters
+!!            &natdms           : DMS parameters
+!!            &natn2o           : N2O parameters
+!!            &natch4           : CH4 parameters (with key_trc_ch4 only)
+!!
+!! parameters referring to all plankton functional types (PFTs) in PlankTOM12 use the following order: BAC, PRO, PTE, MES, GEL, CRU, DIA, MIX, COC, PIC, PHA, FIX
+!! parameters referring to all zooplankton PFTs (zPFTs) in PlankTOM12 use the following order: PRO, PTE, MES, GEL, CRU
+!! parameters referring to all phytoplankton PFTs (pPFTs) in PlankTOM12 use the following order: DIA, MIX, COC, PIC, PHA, FIX
+!! 
+!!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+!
+!-----------------------------------------------------------------------
+&natdet      !   particulate aggregation parameters
+!-----------------------------------------------------------------------
+!
+   rn_ag1poc =     1.2e4 ,    ! POC-POC coagulation dependent on turbulence (L s/(mol d m2))
+   rn_ag2poc =     1.0e4 ,    ! POC-GOC coagulation dependent on turbulence (L s/(mol d m2))
+   rn_ag3poc =   140. ,       ! POC to GOC differential settling (L/(mol d))
+   rn_ag4poc =   150. ,       ! POC to POC differential settling (L/(mol d))
+   rn_ag5doc =   180. ,       ! DOC to POC aggregation (L s/(mol d m2))
+   rn_ag6doc =     3.9e3 ,    ! DOC to GOC aggregation (L s/(mol d m2))
+   rn_ag7doc =     1.0e3 ,    ! DOC to POC aggregation (L s/(mol d m2))
+   rn_readsi =     0.1,       ! maximum DSi degradation (1/d)
+   rn_remdsi =179831.,        ! DSi degradation at infinite T (1/d)
+   rn_retdsi = -4366.,        ! T dependence DSi degradation (Kelvin?)
+   rn_snkhoc =   150.,        ! Huge particles sinking speed (m/d)
+   rn_sisgoc =     0.0303 ,   ! Big particles sinking slope (m2/(kg d))
+   rn_siegoc =     0.6923 ,   ! Big particles sinking exponent (no units)
+   rn_snkpoc =    10. ,       ! POC sinking speed (m/d)
+   rn_snkmax =   150. ,       ! maximum sink speed (m/d)
+/
+!
+!-----------------------------------------------------------------------
+&natriv      !   river elemental input parameters
+!-----------------------------------------------------------------------
+!
+   rn_rivdic =     1. ,       ! (1 - estuarine retention fraction) of river DIC (no units)
+   rn_rivdoc =     1. ,       ! (1 - estuarine retention fraction) of river DOC (no units)
+   rn_rivfer =     0.25 ,     ! (1 - estuarine retention fraction) of river iron (no units)
+   rn_rivnit =     1. ,       ! (1 - estuarine retention fraction) of river NO3 (no units)
+   rn_rivpo4 =     1. ,       ! (1 - estuarine retention fraction) of river PO4 (no units)
+   rn_rivpoc =     0.55 ,     ! (1 - estuarine retention fraction) of river POC (no units)
+   rn_rivsil =     1. ,       ! (1 - estuarine retention fraction) of river SIL (no units)
+/
+!
+!-----------------------------------------------------------------------
+&natfer      !   iron model parameters
+!-----------------------------------------------------------------------
+!
+   rn_fersol =     0.01 ,    ! solubility of iron in dust (fraction)
+   rn_silsol =     0.075 ,   ! solubility of silica in dust (fraction)
+   rn_sedfer =    1.e-11 ,   ! coastal release of iron (mol/L)
+   rn_scofer =     1.0e-3 ,  ! scavenging rate of iron
+   rn_scmfer =     1.0e-3 ,  ! minimum scavenging rate of iron
+   rn_ligfrn =     0.6e-9 ,  ! ligand concentration of iron in the north (mol/L)
+   rn_liglat =    40.,       ! North boundary of Southern Ocean used to differentiate ligand concentration (degree South)
+   rn_ligdpn =    50.,       ! depth at which iron concentration starts to be restored to ligand concentration (m) in the North
+   rn_ligdps =    50.,       ! depth at which iron concentration starts to be restored to ligand concentration (m) in the South
+   rn_ligfrs =     0.3e-9 ,  ! ligand concentration of iron in the Southern Ocean (mol/L)
+/
+!
+!-----------------------------------------------------------------------
+&natpre      !   preference for food parameters (including for bacteria)
+!-----------------------------------------------------------------------
+!
+! baterial remineralisation preference parameters
+!
+   rn_bmsdet =     5.1  , 0.2  , 0.2  , 0.2  ,      ! global total amount of carbon (Pg) in each organic matter source
+   rn_gbadoc =     0.088,    ! bacteria preference for DOC
+   rn_gbapoc =     8.76 ,    ! bacteria preference for POC
+   rn_gbagoc =     8.76 ,    ! bacteria preference for GOC
+   rn_gbagon =    11.42 ,    ! bacteria preference for GON
+   rn_gbahoc =     8.76 ,    ! bacteria preference for HOC
+!
+! zooplankton grazing preference parameters
+!
+   rn_bmspft = 0.30, 0.30, 0.00, 0.30, 0.24, 0.049, 0.16, 0.15, 0.22, 0.11, 0.13, 0.13, 0.25, 0.13, 0.03  ! global total amount of carbon (Pg) in each food source
+!
+!  rn_prfzoo is the relative preference of each zPFT for each food sources
+!  Food sources order (rows below): POC GOC HOC BAC PRO PTE MES GEL CRU DIA MIX COC PIC PHA FIX
+!
+!  zPFT order:       PRO      PTE      MES      GEL      CRU
+   rn_prfzoo =      0.025,   0.067,   0.067,   0.010,   0.050,                  
+                    0.025,   0.067,   0.067,   0.010,   0.050,                  
+                    0.025,   0.067,   0.067,   0.010,   0.050,                  
+                    1.000,   0.067,   0.067,   0.010,   0.050,                  
+                    0.   ,   1.000,   1.000,   0.750,   0.500,                  
+                    0.   ,   0.   ,   0.500,   0.200,   0.250,                  
+                    0.   ,   0.   ,   0.   ,   1.000,   1.000,                  
+                    0.   ,   0.   ,   0.   ,   0.   ,   0.250,                  
+                    0.   ,   0.   ,   0.   ,   0.500,   0.   ,                  
+                    0.250,   0.667,   0.667,   0.100,   0.500,                  
+                    0.500,   0.500,   0.500,   0.100,   0.500,                  
+                    0.500,   0.500,   0.500,   0.010,   0.500,                  
+                    0.750,   0.500,   0.500,   0.010,   0.250,                  
+                    0.500,   0.500,   0.500,   0.100,   0.500,                  
+                    0.500,   0.067,   0.067,   0.010,   0.050,
+/
+!
+!-----------------------------------------------------------------------
+&natzoo      !   biological parameters related to heterotrophs
+!            !   zPFT order: PRO PTE MES GEL CRU
+!-----------------------------------------------------------------------
+!
+   nn_gonmin =              2     ,                             ! smallest zPFT that feed into GON 
+   nn_gonmax =                                         5     ,  ! largest  zPFT that feed into GON 
+   nn_morsqu =     0     ,                                      ! use squared mortality (1) or total biomass as a proxy for top-predator (0)
+   nn_sizzoo =     0     ,  1     ,  1     ,  1     ,  1     ,  ! losses go to POC = 0, GOC = 1, or HOC = 2, for each zooplankton PFT
+   rn_ggezoo =     0.29  ,  0.25  ,  0.25  ,  0.30  ,  0.30  ,  ! gross growth efficiency (no units)
+   rn_sigzoo =     0.66  ,  0.68  ,  0.68  ,  0.70  ,  0.70  ,  ! inorganic fraction of excretion (no units)
+   rn_unazoo =     0.13  ,  0.30  ,  0.30  ,  0.18  ,  0.18  ,  ! unassimilated fraction of grazing as fecal pellets (no units)
+   rn_grabac =     4.76,                                        ! optimum BAC uptake rate (1/d)
+   rn_gramin =     1e-10,                                       ! minimum food for grazing  (mol/L)  
+   rn_grazoo =     3.86  ,  1.20  ,  2.84  ,  1.20  ,  0.53  ,  ! zPFT optimal grazing rate (1/d)
+   rn_grkzoo =     8.0e-6, 10.0e-6, 10.0e-6, 10.0e-6,  9.0e-6,  ! half saturation grazing (mol/L)
+!
+   rn_ggebac =     0.21,                                        ! bacteria growth efficiency at 0C (no units)
+   rn_ggtbac =     0.0 ,                                        ! T dependence of bacteria growth efficiency (1/Celsius)  
+   rn_kmobac =     8.0e-6,                                      ! half saturation         in DOC remineralisation by bacteria (mol/L)
+   rn_kmfbac =     0.025e-9,                                    ! half saturation for Fe  in DOC remineralisation by bacteria (mol/L)
+   rn_kmpbac =     1.0e-7,                                      ! half saturation for PO4 in DOC remineralisation by bacteria (mol/L; PO4 in C-equivalent)
+   rn_resbac =     0.10,                                        ! BAC respiration rate (1/d)
+   rn_retbac =     1.0494,                                      ! T dependence of BAC respiration rate (no units)
+   rn_rembac =     1.e-8,                                       ! minimum concentration for bacteria in remineralisation (mol/L)
+!
+   rn_denno3 =    10.0e-6,                                      ! oxygen dependence denitrification (mol/L)
+!
+   rn_morgel =     0.06,                                        ! gelatinous zooplankton mortality rate (1/d)
+   rn_morcru =     0.006,                                       ! crustacean zooplankton mortality rate (1/d)
+   rn_motgel =     1.0184,                                      ! T dependence of gelatinous zooplankton mortality (no units)  
+   rn_motcru =     1.1161,                                      ! T dependence of crustacean zooplankton mortality (no units)
+   rn_reszoo =     0.050 ,  0.008 ,  0.008 ,  0.0293,  0.0121,  ! respiration rate of zooplankton at 0C (1/d)
+   rn_retzoo =     1.0897,  1.0748,  1.0887,  1.0654,  1.0942,  ! T dependence of zooplankton respiration (no units)
+   rn_icecru =   100.0,                                         ! crustacean macrozoo growth enhancement under ice (multiplicative factor)
+/
+!
+!-----------------------------------------------------------------------
+&natphy      !   biological parameters related to phyto
+!            !   pPFT order: DIA MIX COC PIC PHA FIX
+!-----------------------------------------------------------------------
+!
+   rn_bsidia =     0.13,                                        ! minimum ratio of silification:photosynthesis diatoms (molSi/molC)
+   rn_coccal =     0.1,                                         ! ratio of calcification:photosynthesis coccolithophores (molCaCO3/molC)
+   rn_discal =     0.75,                                        ! fraction of calcite dissolution with coc loss
+   rn_ferbsi =     3.,                                          ! iron limited multiplier of Si:C            
+   rn_silbsi =     6.,                                          ! silicate saturated multiplier of Si:C
+   rn_kmsbsi =    20.0e-6,                                      ! silicate half saturation constant for Si:C of DIA (mol/L) 
+   rn_lyoco3 =     2.,                                          ! exponent for calcite dissolution rate
+   rn_lyscal =     0.253,                                       ! subsaturated max calcite dissolution rate (1/d) (mol/L)^(1-rn_lyoco3))
+   rn_sildia =     0.42e-6,                                     ! silicate half saturation constant diatoms (mol/L)
+   rn_munfix =     0.56,                                        ! fraction of growth rate during N2fix
+!
+   rn_resphy =     0.12   ,  0.15   ,  0.15   ,  0.15   ,  0.15   ,  0.15   , ! phyto respiration as a fraction of growth 
+   rn_docphy =     0.05   ,  0.05   ,  0.05   ,  0.05   ,  0.05   ,  0.05   , ! excretion ratio
+   rn_domphy =     0.45   ,  0.45   ,  0.45   ,  0.45   ,  0.45   ,  0.45   , ! maximum DOC excretion ratio
+   rn_kmnphy =     2.0e-6 ,  2.0e-6 ,  2.0e-6 ,  2.0e-6 ,  3.0e-6 , 13.e-6  , ! half saturation concentration for NO3 (mol/L)
+   rn_kmpphy =     7.6e-6 , 12.2e-6 , 15.9e-6 ,  15.9e-6, 97.6e-6 , 24.4e-6 , ! half saturation concentration for PO4 (molC-equivalent/L (divide by 122 to get molP/L))
+   rn_mumpft =     1.67   ,  1.27   ,  1.27   ,  1.43   ,  1.81   ,  0.26   , ! optimum growth rate of phytoplankton PFTs
+/
+!
+!-----------------------------------------------------------------------
+&natpft      !   biological parameters related to all PFTs
+!            !   PFT order: BAC PRO PTE MES GEL CRU DIA MIX COC PIC PHA FIX
+!-----------------------------------------------------------------------
+!
+! rn_mutpft is the optimum temperature of growth (or grazing/uptake for zPFTs) rate (degree Celsius)
+! rn_mudpft is the width of temperature response curve (degree Celsius)
+!
+   rn_mutpft =     15.20   ,  16.70  ,    3.00  , 28.40  ,  26.60  ,  16.90  ,  24.60  ,  24.20  ,  20.30  ,  27.70  ,  15.00  ,  27.80  ,
+   rn_mudpft =     30.5    ,  14.1   ,   25.05  , 22.7   ,  24.6   ,  15.8   ,  26.1   ,  16.9   ,   10.7  ,  23.2   ,  20.0   ,  8.0    ,
+/
+!
+!-----------------------------------------------------------------------
+&natquo      !   iron quota model parameters
+!            !   pPFT order: DIA MIX COC PIC PHA FIX
+!-----------------------------------------------------------------------
+!
+   rn_kmfphy =    40.0e-9 , 25.0e-9 , 25.0e-9 , 25.0e-9 , 60.0e-9 , 40.0e-9 , ! half saturation constant of iron (mol/L)
+   rn_rhfphy =    29.     , 29.     , 29.     , 29.     , 29.     , 29.     , ! ratio between iron starved and iron saturated maximum iron uptake rates (no units)
+   rn_qmaphy =    20.e-6  , 20.e-6  , 20.e-6  , 20.e-6  , 20.e-6  , 20.e-6  , ! maximum iron quota (molFe/molC)
+   rn_qmiphy =     4.0e-6 ,  4.0e-6 ,  4.0e-6 , 4.0e-6  ,  4.0e-6 ,  4.0e-6 , ! minimum iron quota (molFe/molC)
+   rn_qopphy =     8.6e-6 ,  8.6e-6 ,  8.6e-6 , 8.6e-6  ,  8.6e-6 ,  8.6e-6 , ! optimal iron quota (molFe/molC)
+/
+!
+!-----------------------------------------------------------------------
+&natlit      !   light-iron model parameters
+!            !   pPFT order: DIA MIX COC PIC PHA FIX
+!-----------------------------------------------------------------------
+!
+   rn_ekwgrn =     0.0232,                                                    ! absorption coefficient of water for blue-green light (1/m)
+   rn_ekwred =     0.225,                                                     ! absorption coefficient of water for red light (1/m)
+   rn_alpphy =     1.0e-6 ,  1.0e-6 ,  1.0e-6 ,  1.0e-6 ,  1.0e-6 ,  1.0e-6 , ! initial slope of photosynthesis vs light intensity curve (molC/m2)/(gChl mol photons)
+   rn_kgrphy =     0.0118 ,  0.0257 ,  0.0257 ,  0.0696 ,  0.0257 ,  0.0657 , ! light absorption in the blue-green (L/(mgChl))
+   rn_krdphy =     0.0056 ,  0.0098 ,  0.0098 ,  0.0197 ,  0.0098 ,  0.0181 , ! light absorption in the red (L/(mgChl))
+   rn_thmphy =     0.7    ,  0.4    ,  0.4    ,  0.4    ,  0.5    ,  0.3    , ! maximum CHL:C ratio (gChl/molC)
+/
+!
+!-----------------------------------------------------------------------
+&natzca      !   additional calcite and aragonite parameters (beyond those related to pPFTs)
+!-----------------------------------------------------------------------
+!
+   rn_disara =     0.75,  ! aragonite dissolution with pteropod loss (fraction)
+   rn_disfor =     0.,    ! calcite dissolution with foraminifers loss (fraction)
+   rn_forcal =     0.49,  ! calcification:organic C ratio foraminifers (molCaCO3/molC)
+   rn_pteara =     0.52,  ! calcification:organic C ratio pteropods (molCaCO3/molC)
+   rn_lysara =     0.253, ! subsaturated max aragonite dissolution rate (1/d) (mol/L)^(1-rn_lyoco3))
+/
+!
+!-----------------------------------------------------------------------
+&natdms      !   DMS parameters
+!-----------------------------------------------------------------------
+!
+   rn_dmsyld = 0.1,       ! microbial yield of DMS production (mol DMS/mol DMSP)
+   rn_etomax = 80.,       ! maximum surface insolation (W/m2)
+   rn_rdddms = 0.1,       ! Ratio of DMS/DMSP released during grazing (no units)
+   rn_xcldmd = 0.01,      ! DMSP-lyase DMSPd cleavage rate (1/d)
+   rn_xpodms = 0.05,      ! photolysis rate of DMS (m2/W/d)
+   rn_xkdmd  = 1.08E-9,   ! half saturation constant for bacteria on DMSPd (mol DMSP)
+   rn_xkdms  = 1.25E-9,   ! half saturation constant for bacteria on DMS (mol DMS)
+!
+   rn_assdms =     0.     ,  0.     ,  0.5    ,  0.5    ,  0.5    ,           ! fraction of DMSP in fecal pellets lost (no units)
+   rn_rphdmd =     0.002  ,  0.01   ,  0.012  ,  0.01   ,  0.01   ,  0.01   , ! maximum DMSP quota (mol DMSP/mol C)
+   rn_xpldmd =     0.005  ,  0.05   ,  0.05   ,  0.05   ,  0.05   ,  0.05   , ! DMSP leakage rate (1/d)
+/
+!
+!-----------------------------------------------------------------------
+&natn2o      !   N2O parameters
+!-----------------------------------------------------------------------
+!
+   nn_deun2s =    13,     ! vertical layer below which N2O is produced (no units)
+   rn_aoun2s = 0.75e-4,   ! slope of O2 independent N2O production (mol N2O/mol O2)
+   rn_betn2s =     0.003, ! slope of hypoxic N2O production (mol N2O/mol O2)
+   rn_decn2s =    -0.1,   ! Exponent of decreasing N2O production with O2 (no units)
+   rn_omxn2s = 1.E-6,     ! O2 concentration below which prod. stops increasing (mol O2/L)
+/
+!
+!-----------------------------------------------------------------------
+&nat_biodts  !   biological diagnostic for T and S
+!-----------------------------------------------------------------------
+!
+   nn_biodts = 0,         ! = 0 : use the default modelled T and S
+                          ! = 1 : biological              subroutines use observed clim. T and S
+                          ! = 2 : chemical                subroutines use observed clim. T and S
+                          ! = 3 : biological and chemical subroutines use observed clim. T and S
+/
+!
+!-----------------------------------------------------------------------
+&natc14      !   CH4 parameters (with key_trc_ch4 only)
+!-----------------------------------------------------------------------
+!
+   rn_bfrd14 = 75.        ! C14 fractionation during primary production
+/
+

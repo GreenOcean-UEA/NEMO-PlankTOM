@@ -1,0 +1,201 @@
+
+# -------------------------
+# 
+# This file contains all the paths and parameter needed for a run of planktom on ADA.
+#
+# This file is read in by setUpRun.sh.
+#
+# Lines with a preceding # will be ignored.
+#
+# Links and parameters are set by the name preceding the colon and the path after and each will have an explanation as to what you're changing.
+#
+# All runs will be on ADA and use NEMO v3.6 (including planktom5 runs), no compilation of code is required as versioned copies of the code will be kept in a source directory.
+#
+# For development code, the option to replace the location of compiled code is available
+# 
+# Not all variables and paths will be used by all versions of the planktom.
+# 
+# This setup script is yours and you should make copies of it depending on how you want to run your models. e.g. setUpData_climatology.dat or setUpData_TOM5_JRA55_staticCO2.dat
+# 
+# The structure of each path or variable is as follows
+# name:value
+#
+# Any name containing a "." will be a link to a file, otherwise it is a path or value
+#
+# -------------------------
+
+# ========== RUN COMPONENTS ==========
+# Model version to run (options: TOM5, TOM10, TOM12, dev)
+model:DEV
+
+# Starting year of the run
+# - forcing data starts in 1948 (NCEP) and 1940 (ERA5) so data before then will be a looping year of 1990 for spin-up purposes
+yearStart:1948
+yearEnd:1948
+
+# CO2 (VARIABLE or STATIC)
+CO2:VARIABLE
+
+# Dynamic or bias run (DYNAMIC or BIAS) 
+type:DYNAMIC
+
+# Forcing (NCEP or ERA)
+forcing:ERA
+
+# Tidyup options
+# Period where we don't want to keep outputs/restarts
+spinupStart:1750
+spinupEnd:1948
+
+# Keep restarts and output frequency (years)
+spinupRestartKeepFrequency:1
+spinupOutputKeepFrequency:1
+runRestartKeepFrequency:1
+runOutputKeepFrequency:1
+
+# Flags for keeping respective files (0 = delete, 1 = keep)
+keepGrid_T:1
+keepGrid_U:0
+keepGrid_V:0
+keepGrid_W:0
+keepDiad:1
+keepPtrc:1
+keepIce:0
+keepLimPhy:0
+
+# Location of breakdown parameter file (if not specified, will use default)
+breakdown_parms:/gpfs/data/greenocean/software/CodeReview/KAR12/SETUP/breakdown_parms
+
+# Base directory for saving model run data (clean up scripts will copy data to central area [specified in tidyup.sh])
+basedir:/gpfs/home/avd22gnu/scratch/ModelRuns/
+
+# Location of file with compiler keys (for checking compiler keys match)
+compilerKey:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/cpp_ORCA2_LIM_PlankTOM.fcm
+
+
+# ========== INPUT RESOURCES ==========
+# Restart files (files from which the model is started, can be generic)
+
+# Passive tracers
+restart_trc.nc:/gpfs/data/greenocean/software/resources/ModelResources/RestartFiles/restart_19471231_trc_PT_noHOC.nc
+
+# Ice
+restart_ice_in.nc:/gpfs/data/greenocean/software/resources/ModelResources/RestartFiles/restart_ice_v3.6.nc
+
+# Restart for the physics parameters
+restart.nc:/gpfs/data/greenocean/software/resources/ModelResources/RestartFiles/restart_19191231_opa_PT.nc
+
+# Evaporation and precipitation balancing file (this needs to be for previous year, if using restarts)
+EMPaveFile:/gpfs/data/greenocean/software/resources/ModelResources/RestartFiles/EMPave_1947.dat
+
+# A file, a 2D integer used to increase the horizontal eddy viscosity along western boundary in the equatorial strip 20S-20N
+ahmcoef.nc:/gpfs/data/greenocean/software/resources/ModelResources/EddyViscCoeff/ahmcoef.nc
+
+# Atmospheric CO2 levels updated yearly, file used is controlled by the CO2 variable
+# - SSP1 : /gpfs/data/greenocean/software/resources/SOZONE_atmo/atmco2_ssp1-26.dat
+# - SSP3 : /gpfs/data/greenocean/software/resources/SOZONE_atmo/atmco2_ssp3-70.dat
+# - GCB  : /gpfs/home/mep22dku/scratch/GCB2023_atmco2/gcbco2_2023_4200_v2_padding.dat
+# - constant CO2 from 1750 (278ppm) : atmco2_dw_edit_4200_v3_CONSTANT_1750.dat
+atmco2.dat.variable:/gpfs/data/greenocean/software/resources/SOZONE_atmo/atmco2_ssp1-26.dat
+atmco2.dat.static:/gpfs/data/greenocean/software/resources/ModelResources/AtmosCO2/atmco2_PT_v1_CONSTANT_1750.dat 
+
+# cfcs
+atmco2cfc.dat:/gpfs/data/greenocean/software/resources/ModelResources/AtmosCO2/atmco2cfc_NEEDS_WORK.dat
+
+# Atmospheric C14
+atmb14.dat:/gpfs/data/greenocean/software/resources/SOZONE_atmo/atmb14_TJ_hm.dat
+atmc14.dat:/gpfs/data/greenocean/software/resources/SOZONE_atmo/atmc14_TJ_hm.dat
+
+# Bathmetry files (in meter)
+# - this is referenced by the model but the data is not used
+# - the bathymetry in levels is used in setting up the domains and defining the coastal masks and combining with dust input
+bathy_level.nc:/gpfs/data/greenocean/software/resources/ModelResources/Bathymetry/bathy_level.nc
+bathy_meter.nc:/gpfs/data/greenocean/software/resources/ModelResources/Bathymetry/bathy_meter.nc
+bathy.orca.nc:/gpfs/data/greenocean/software/resources/ModelResources/Bathymetry/bathy.orca.nc
+
+# Scale factors e[123][tuvwf] and geographical glam[tuvwf] and gphi[tuvwf] location of each grid points T- U- V- W- and F-
+coordinates.nc:/gpfs/data/greenocean/software/resources/ModelResources/GridCoordinates/coordinates.nc
+
+# NODC (Levitus) World Ocean Atlas interpolated on ORCA grid
+# - Atlas (Levitus) of potenial temperature (temperature fluid would attain if brought to standard Pressure [1000hPa]) and salinity
+data_1m_potential_temperature_nomask.nc:/gpfs/data/greenocean/software/resources/ModelResources/Atlas/WOA01_ORCA2_1m_potemp.nc 
+data_1m_salinity_nomask.nc:/gpfs/data/greenocean/software/resources/ModelResources/Atlas/WOA01_ORCA2_1m_sal.nc 
+
+# Surface dust deposition - source of Fe
+dust.orca.nc:/gpfs/data/greenocean/software/resources/ModelResources/Dust/dust.Jickells2005.times035.ORCA.nc
+
+# Atmospheric input of nitrogen
+ndeposition.nc:/gpfs/data/greenocean/software/resources/ModelResources/Dust/ndeposition.orca.nc
+
+# River run off, source of C and nutrients
+# - looks to have been calculated from code run in here /gpfs/data/greenocean/ClareE/river/, origin of data to be investigated
+river.nc:/gpfs/data/greenocean/software/resources/ModelResources/River/river.nc 
+
+# Runoff (possibly created from data_1m_salinity_nomask file, origin of data to be investigated)
+runoff_core_monthly.nc:/gpfs/data/greenocean/software/resources/ModelResources/River/runoff_core_monthly.nc
+
+# Geothermal heating - constant geothermal heat flux (mW/m2)
+geothermal_heating.nc:/gpfs/data/greenocean/software/resources/ModelResources/Geothermal/geothermal_heating.nc 
+
+# Tides files / heat flow
+K1rowdrg.nc:/gpfs/data/greenocean/software/resources/ModelResources/Tides/K1rowdrg.nc
+M2rowdrg.nc:/gpfs/data/greenocean/software/resources/ModelResources/Tides/M2rowdrg.nc
+
+# Chlorophyll data taken with seawifs project (more at /gpfs/data/greenocean/seawifs/)
+chlorophyll.nc:/gpfs/data/greenocean/software/resources/ModelResources/Chlorophyll/chlorophyll.nc
+
+# A mask file for indonesian pacific region
+mask_itf.nc:/gpfs/data/greenocean/software/resources/ModelResources/Masks/mask_itf.nc
+
+
+# ========== MODEL COMPONENTS ==========
+
+# The xios server that handles the input-output-manager
+xios_server.exe:/gpfs/software/ada/xios/1.0/gcc-openmpi/xios_server.exe 
+
+# Executeable for the model (compiled, to use your own just replace this path with the location)
+opa_DEV:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/BLD/bin/nemo.exe 
+
+# ----- NAMELISTS -----
+# The NAMELIST of variables that control the run (e.g. how the model starts, defined by the restart file?)
+# Config nameslist (PlankTOM independent)
+namelist_cfg:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/EXP00/namelist_cfg
+
+# Tracers included in the model (sn_tracer)
+namelist_top_ref:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/EXP00/namelist_top_ref_tom12piicc14
+
+# The namelist that has variables more specific to the run, eg forcing 
+namelist_ref_era:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/EXP00/namelist_ref_era
+
+# Namelist versions with the parameter change for SPINNING UP
+# - first year needs to be run with the date set in the namelist_ref variable nn_date0 and the nn_rstctl flag set to 0
+# - run one year and then copy the namelist above in place
+# - nn_rstctl flag then set to 2, taking date from existing file
+
+namelist_ref_era_first_year:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/EXP00/namelist_ref_era_start
+
+# For bias runs we need the model to use forcing data that is a loop of a single year (currently set to 1990)
+namelist_ref_era_looping:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/EXP00/namelist_ref_era_looping
+
+# Short namelist of config namelist IDs
+namelist_top_cfg:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/EXP00/namelist_top_cfg
+
+# Namelist of passive tracer information specific to PlankTOM
+namelist.trc.sms:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/EXP00/namelist.trc.sms_tom12
+
+# Namelist for information specific to ice
+namelist_ice_cfg:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/EXP00/namelist_ice_cfg 
+namelist_ice_ref:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/EXP00/namelist_ice_ref 
+
+# Namelist for atmospheric C14
+namelist_c14b:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/EXP00/namelist_c14b
+
+# ----- XML -----
+# Definition of all the fields used
+field_def.xml:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/EXP00/field_def.xml
+
+# Fields output by the model
+iodef.xml:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/EXP00/iodef_tom12piicc14.xml
+
+# How the domains (each area that a CPU calculates) are defined
+domain_def.xml:/gpfs/data/greenocean/software/CodeReview/KAR12/CONFIG/ORCA2_LIM_PlankTOM/EXP00/domain_def.xml

@@ -1,0 +1,35 @@
+# generic pgf90 compiler options for linux
+# NCDF_INC    netcdf include file
+# NCDF_LIB    netcdf library
+# FC          Fortran compiler command
+# FCFLAGS     Fortran compiler flags
+# FFLAGS      Fortran 77 compiler flags
+# LD          linker
+# LDFLAGS     linker flags, e.g. -L<lib dir> if you have libraries in a
+# FPPFLAGS    pre-processing flags
+# AR          assembler
+# ARFLAGS     assembler flags
+# MK          make
+# USER_INC    additional include files for the compiler,  e.g. -I<include dir>
+# USER_LIB    additional libraries to pass to the linker, e.g. -l<library>
+
+%XIOS_HOME           /gpfs/software/ada/xios/1.0/gcc-openmpi/
+%NCDF_INC            -I/gpfs/software/ada/netcdf/4.7.4/openmpi/gcc/include
+%NCDF_LIB            -L/gpfs/software/ada/netcdf/4.7.4/openmpi/gcc/lib -lnetcdf -lnetcdff
+%XIOS_INC            -I%XIOS_HOME/inc 
+%XIOS_LIB            -L%XIOS_HOME/lib -lxios
+
+%CPP   		     cpp
+%FPP                 cpp -P 
+%FC	             mpif90 -c -cpp
+%FCFLAGS             -O3 -fdefault-real-8 -fno-second-underscore -Dgfortran -ffree-line-length-none
+%FFLAGS              %FCFLAGS
+%LD                  mpif90 
+%LDFLAGS             -lstdc++
+%FPPFLAGS            -P -C -traditional 
+%AR                  ar
+%ARFLAGS             -rs
+%MK                  gmake
+%USER_INC            %NCDF_INC %XIOS_INC
+%USER_LIB            %NCDF_LIB %XIOS_LIB
+

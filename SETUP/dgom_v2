@@ -1,0 +1,77 @@
+#!/bin/sh
+#SBATCH --mail-type=ALL
+#SBATCH --qos=ib
+#SBATCH -p ib
+#SBATCH --constraint=mlx5
+
+#SBATCH -t 06:00:00
+#SBATCH -o planktom-GR.log
+#SBATCH -e planktom-ER.log  
+#SBATCH --mem 64G
+#SBATCH --ntasks=48
+#SBATCH --ntasks-per-node=48
+
+. /etc/profile
+
+module purge
+module add gcc/9.2.0 netcdf/4.7.4/parallel/gcc-openmpi hdf5/1.10.6/gcc-openmpi mpi/openmpi/4.0.3/gcc/ib perl
+module list
+set -x
+
+# Number of cpus set to 48 in namelists and above in SLURM
+cpus=48
+
+echo "---- Inputs " $yearToRun $yearStart $yearEnd $basedir $modelDir $simulation $Model
+
+YEARP=$YEARN
+cd $modelDir
+export MYAPP=./opa
+
+date
+START=`date`
+mpirun --mca btl_openib_if_include mlx5_0:1,mlx5_1:1 -np $cpus $MYAPP
+date
+FINISH=`date`
+
+yearPrevious=$yearToRun
+yearToRun=$((yearToRun+1))
+
+timestep=`awk '{printf "%.8d\n", $0}' time.step`
+mv time.step old.time.step
+
+if [ -f ORCA2_${timestep}_restart_0000.nc ]; then
+	mv restart_trc.nc restart_trc_first_year.nc
+	mv restart.nc restart_first_year.nc
+	mv restart_ice_in.nc restart_ice_in_first_year.nc
+	mv EMPave.dat EMPave_${yearPrevious}.dat
+
+	# Link namelist so it continues after the first year, set this each subsequent year
+	ln -fs namelist_ref_all_years namelist_ref
+
+	# Link the restart file to used for the next year to the one just completed.
+	for (( i=0; i<$cpus; i++ )); do
+		if (( i < 10 )); then
+			proc=0$i
+		else
+			proc=$i
+		fi
+
+		ln -fs ORCA2_${timestep}_restart_00${proc}.nc restart_00${proc}.nc
+		ln -fs ORCA2_${timestep}_restart_ice_00${proc}.nc restart_ice_in_00${proc}.nc
+		ln -fs ORCA2_${timestep}_restart_trc_00${proc}.nc restart_trc_00${proc}.nc
+	done
+
+	ln -fs EMPave_${yearPrevious}.dat EMPave_old.dat
+
+	# Submit tidy up routines
+	sbatch -J tidy --export=ALL,basedir=${basedir},modelDir=${modelDir},yearToTidy=${yearPrevious},Model=${Model} tidyupJob
+
+	if [ -f submit.$yearToRun ]; then
+		sbatch -J s${simulation}${yearToRun}< submit.$yearToRun
+	else
+		if [ $yearPrevious -lt $yearEnd ]; then
+			sbatch -J ${simulation}$yearToRun < dgom
+		fi
+	fi
+fi
+

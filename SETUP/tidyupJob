@@ -1,0 +1,20 @@
+#!/bin/sh
+#SBATCH -p compute
+#SBATCH -t 06:00:00
+
+#SBATCH --job-name=tidyup
+#SBATCH -o tidy-%j.log
+#SBATCH -e tidy-%j.log
+#SBATCH --mem 32G
+
+echo "Tidying up: " $modelDir $yearToTidy $Model
+
+module add gcc netcdf/4.7.4/parallel/gcc-openmpi hdf5/1.10.6/gcc-openmpi mpi/openmpi/4.0.3/gcc/ib perl
+module add python/anaconda/2020.11/3.8
+module add ferret/7.6.0
+
+# Go to model directory (/baseDir/<run ID>)
+cd $modelDir
+
+# Run tidy-up script
+./tidyup.sh $yearToTidy $yearToTidy $Model $basedir

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial;}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+/* Add some padding to table rows */
+td {
+  padding-right:15px
+}
+
+/* Add some padding to bullet lists */
+li {
+  margin: 0px 0px 10px 0px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h2>{{identifier}}</h2>
+<table>
+  <tr>
+    <td><b>Version</b></td>
+    <td>{{version}}</td>
+  </tr>
+  <tr>
+    <td><b>Date</b></td>
+    <td>{{date}}</td>
+  </tr>
+ 
+  <tr>
+    <td><b>Period</b></td>
+    <td>{{start_year}} - {{end_year}}</td>
+  </tr>
+  <tr>
+    <td><b>CO2</b></td>
+    <td>{{co2}}</td>
+  </tr>
+  <tr>
+    <td><b>Forcing</b></td>
+    <td>{{forcing}}</td>
+  </tr>
+  <tr>
+    <td><b>Type</b></td>
+    <td>{{type}}</td>
+  </tr>
+  <tr>
+    <td><b>Temp. restoring</b></td>
+    <td>{{temperature_restoring}}</td>
+  </tr>
+  <tr>
+    <td><b>Salinity restoring</b></td>
+    <td>{{salinity_restoring}}</td>
+  </tr>
+</table>
+
+<p>Use the tabs below to view details on this model run.</p>
+
+<div class="tab">
+  <button class="tablinks" onclick="openCity(event, 'ecosystem')" id="default">Ecosystem</button>
+  <button class="tablinks" onclick="openCity(event, 'pfts')">PFTs</button>
+  <button class="tablinks" onclick="openCity(event, 'nutrients')">Nutrients</button> 
+  <button class="tablinks" onclick="openCity(event, 'pco2')">pCO2</button>
+  <button class="tablinks" onclick="openCity(event, 'physics')">Physics</button>
+  <button class="tablinks" onclick="openCity(event, 'vertical')">Vertical depths</button>
+  <button class="tablinks" onclick="openCity(event, 'references')">References</button>
+</div>
+
+<!-- ECOSYSTEM -->
+<div id="ecosystem" class="tabcontent">
+<h3>Ecosystem global summary</h3>
+<IMG SRC="{{identifier}}_summary_global.jpg" WIDTH="91.67%">
+
+<h3>Cflx monthly regional plots</h3>
+<IMG SRC="{{identifier}}_summary_monthly_Cflx.jpg" WIDTH="66.67%">
+
+<h3>Chlorophyll monthly regional plots</h3>
+<IMG SRC="{{identifier}}_summary_monthly_TChl.jpg" WIDTH="66.67%">
+
+<h3>Ecosystem annual mean maps</h3>
+<table>
+  <tr>
+    <th style="width:33%">Model run</th>
+    <th style="width:33%">Observations</th>
+    <th style="width:33%">Difference (model - obs.)</th>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_cflx.png" WIDTH="100%"></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_tchl.png" WIDTH="100%"></td>
+    <td><IMG SRC="OCCCI_tchl_ORCA.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_difference_tchl.png" WIDTH="100%"></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_ppint.png" WIDTH="100%"></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_exp.png" WIDTH="100%"></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+</div>
+
+
+<!-- PFTS -->
+<div id="pfts" class="tabcontent">
+<h3>PFTs global summary</h3>
+<IMG SRC="{{identifier}}_summary_pfts.jpg" WIDTH="75%">
+
+<h3>PFTs annual mean maps</h3>
+<table>
+  <tr>
+    <th style="width:33%">Phytoplankton</th>
+    <th style="width:33%">Zooplankton</th>
+    <th></th>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_pic.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_gel.png" WIDTH="100%"></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_pha.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_pro.png" WIDTH="100%"></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_mix.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_bac.png" WIDTH="100%"></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_dia.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_cru.png" WIDTH="100%"></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_coc.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_pte.png" WIDTH="100%"></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_fix.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_mes.png" WIDTH="100%"></td>
+  </tr>
+</table>
+</div>
+
+
+<!-- NUTRIENTS -->
+<div id="nutrients" class="tabcontent">
+<h3>Nutrients global summary</h3>
+<IMG SRC="{{identifier}}_summary_nutrients.jpg" WIDTH="91.67%">
+
+<h3>Nutrients annual mean maps and comparison to observations</h3>
+<table>
+  <tr>
+    <th style="width:33%">Model run</th>
+    <th style="width:33%">Observations</th>
+    <th style="width:33%">Difference (model - obs.)</th>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_po4.png" WIDTH="100%"></td>
+    <td><IMG SRC="woa18_po4.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_difference_po4.png" WIDTH="100%"></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_no3.png" WIDTH="100%"></td>
+    <td><IMG SRC="woa18_no3.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_difference_no3.png" WIDTH="100%"></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_fer.png" WIDTH="100%"></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_sil.png" WIDTH="100%"></td>
+    <td><IMG SRC="woa18_sil.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_difference_sil.png" WIDTH="100%"></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_o2.png" WIDTH="100%"></td>
+    <td><IMG SRC="woa18_oxy.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_difference_o2.png" WIDTH="100%"></td>
+  </tr>
+</table>
+</div>
+
+
+<!-- PCO2 -->
+<div id="pco2" class="tabcontent">
+<h3>pCO2 monthly regional plots</h3>
+<IMG SRC="{{identifier}}_summary_monthly_pCO2.jpg" WIDTH="66.67%">
+
+<h3>pCO2 monthly regional plots (normalised)</h3>
+<IMG SRC="{{identifier}}_summary_monthly_pCO2_normalised.jpg" WIDTH="66.67%">
+
+<h3>dpCO2 annual mean map (average over the year)</h3>
+<table>
+  <tr>
+    <th style="width:33%">Model run</th>
+    <th style="width:33%">Observations (data products: 2010-2019 ave)</th>
+    <th style="width:33%">Difference (model - obs.)</th>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_dpco2.png" WIDTH="100%"></td>
+    <td><IMG SRC="gcb_2022_dpco2_ORCA.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_difference_dpco2.png" WIDTH="100%"></td>
+  </tr>
+</table>
+</div>
+
+
+<!-- PHYSICS -->
+<div id="physics" class="tabcontent">
+<h3>Physics global summary</h3>
+<IMG SRC="{{identifier}}_summary_physics.jpg" WIDTH="75%">
+
+<h3>Sea surface temperature monthly regional plots</h3>
+<IMG SRC="{{identifier}}_summary_monthly_SST.jpg" WIDTH="66.67%">
+
+<h3>Mixed layer depth monthly regional plots</h3>
+<IMG SRC="{{identifier}}_summary_monthly_MLD.jpg" WIDTH="66.67%">
+
+<h3>Physics annual mean maps</h3>
+<table>
+  <tr>
+    <th style="width:33%">Model run</th>
+    <th style="width:33%">Observations</th>
+    <th style="width:33%">Difference (model - obs.)</th>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_temp.png" WIDTH="100%"></td>
+    <td><IMG SRC="woa18_A5B7_temp.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_difference_temp.png" WIDTH="100%"></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_salin.png" WIDTH="100%"></td>
+    <td><IMG SRC="woa18_A5B7_salin.png" WIDTH="100%"></td>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_difference_salin.png" WIDTH="100%"></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_mld_ave.png" WIDTH="100%"></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><IMG SRC="{{identifier}}_{{end_year}}_mld_max.png" WIDTH="100%"></td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+</div>
+
+
+<!-- VERTICAL DEPTH -->
+<div id="vertical" class="tabcontent">
+<h3>Ecosystem vertical depth profile</h3>
+<IMG SRC="{{identifier}}_vertical_depth_ecosystem.png" WIDTH="75%">
+
+<h3>PFTs vertical depth profile</h3>
+<IMG SRC="{{identifier}}_vertical_depth_pfts.png" WIDTH="100%">
+
+<h3>Nutrients vertical depth profile</h3>
+<IMG SRC="{{identifier}}_vertical_depth_nutrients.png" WIDTH="75%">
+
+<h3>Organic carbon vertical depth profile</h3>
+<IMG SRC="{{identifier}}_vertical_depth_orgcarbon.png" WIDTH="75%">
+
+<h3>Physics vertical depth profile</h3>
+<IMG SRC="{{identifier}}_vertical_depth_physics.png" WIDTH="50%">
+</div>
+
+
+<!-- REFERENCES -->
+<div id="references" class="tabcontent">
+<h3>Observation data</h3>
+  <ul>
+    <li>The observation value for total chlorohpyll is determined by calculating a global average from the OCCCI version 5 monthly climatology dataset. This data is also used to create the maps and calculate the difference to the model.</li>
+    <li>The observation ranges for primary production and CaCO3 flux and the observation value for Si flux are taken from the paper <a href="https://bg.copernicus.org/articles/13/4111/2016/bg-13-4111-2016.html" target="_blank"><i>Role of zooplankton dynamics for Southern Ocean phytoplankton biomass and global biogeochemical cycles</i></a> (2016).</li>
+    <li>The observation range for export is taken from the paper <a href="https://iopscience.iop.org/article/10.1088/1748-9326/ad1e7f" target="_blank"><i>Effect of sampling bias on global estimates of ocean carbon export</i></a> (2024).</li>
+    <li>The biomass ranges for all plankton functional types (PFTs) except for GEL are taken from the paper <a href="https://bg.copernicus.org/articles/13/4111/2016/bg-13-4111-2016.html" target="_blank"><i>Role of zooplankton dynamics for Southern Ocean phytoplankton biomass and global biogeochemical cycles</i></a> (2016).</li>
+    <li>The biomass range for GEL is taken from the paper <a href="https://bg.copernicus.org/articles/18/1291/2021/" target="_blank"><i>Role of jellyfish in the plankton ecosystem revealed using a global ocean biogeochemical model</i></a> (2021).</li>
+    <li>The observation values for nutrients (phosphate, nitrates, silica, and oxygen) are determined by calculating a global average from the <a href="https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:NCEI-WOA18" target="_blank"><i>World Ocean Atlas 2018</i></a> annual datasets. These datasets are also used for creating the observation maps and calculating the difference to the model output.</li>
+    <li>The observation values for pCO2 are calculated from an ensemble mean of the data-products from the <a href="https://essd.copernicus.org/articles/14/4811/2022/essd-14-4811-2022.html" target="_blank"><i>Global Carbon Budget 2022</i></a>. This data is also used for creating the observation map for dpCO2 and calculating the difference to the model output.</li>
+    <li>The observation data for the physics tracers used to create maps and calculate the difference to the model output is taken from the <a href="https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:NCEI-WOA18" target="_blank"><i>World Ocean Atlas 2018</i></a> annual datasets. We use the dataset for the period 2005-2018 for our comparison.</li>
+  </ul>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+
+<script>
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("default").click();
+</script>
+
+</body>
+</html> 

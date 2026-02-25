@@ -1,0 +1,75 @@
+!! ANNUAL MEAN MAPS FERRET SCRIPT !!
+
+! FERRET script for creating difference plots for nutrients and physics for the final year of the run
+! The first parameter passed to the script is the directory, second is the run identifier, third is the year
+
+use /gpfs/data/greenocean/software/resources/breakdown/basin_mask.nc
+use ($1)/($2)/ORCA2_1m_($3)0101_($3)1231_diad_T.nc
+use ($1)/($2)/ORCA2_1m_($3)0101_($3)1231_grid_T.nc
+use ($1)/($2)/ORCA2_1m_($3)0101_($3)1231_ptrc_T.nc
+
+!! Regridded observation data for calculating differences !!
+use /gpfs/data/greenocean/software/resources/Observations/regridded/woa18_all_n00_01_regridORCA_converted.nc
+use /gpfs/data/greenocean/software/resources/Observations/regridded/woa18_all_p00_01_regridORCA_converted.nc
+use /gpfs/data/greenocean/software/resources/Observations/regridded/woa18_all_i00_01_regridORCA_converted.nc
+use /gpfs/data/greenocean/software/resources/Observations/regridded/woa18_all_o00_01_regridORCA_converted.nc
+
+use /gpfs/data/greenocean/software/resources/Observations/regridded/GCB-2022_dataprod_regridORCA.nc
+use /gpfs/data/greenocean/software/resources/Observations/regridded/woa18_A5B7_t00_01_regridORCA_unitconv.nc
+use /gpfs/data/greenocean/software/resources/Observations/regridded/woa18_A5B7_s00_01_regridORCA_unitconv.nc
+use /gpfs/data/greenocean/software/resources/Observations/regridded/OCCCIv5_clim_monthly_regridORCA.nc
+
+let land_mask = IF area[d=1] GT 0 THEN 1
+
+!! NUTRIENTS !!
+! NO3
+let no3_diff = NO3[d=4, k=1, l=@ave] - n_an[d=5, k=1, l=1]
+let/title="NO3 [umol/L]" masked = no3_diff * land_mask * 1e6
+sha/palette=light_centered/lev=(-inf)(-20,20,1)(inf) masked
+frame/file=$2_$3_difference_no3.gif
+
+! PO4
+let po4_diff = PO4[d=4, k=1, l=@ave] - p_an[d=6, k=1, l=1]
+let/title="PO4 [umol/L]" masked = po4_diff * land_mask * 1e6
+sha/palette=light_centered/lev=(-inf)(-200,200,10)(inf) masked
+frame/file=$2_$3_difference_po4.gif
+
+! Si
+let sil_diff = Si[d=4, k=1, l=@ave] - i_an[d=7, k=1, l=1]
+let/title="Silica [umol/L]" masked = sil_diff * land_mask * 1e6
+sha/palette=light_centered/lev=(-inf)(-50,50,2.5)(inf) masked
+frame/file=$2_$3_difference_sil.gif
+
+! O2
+let oxy_diff = O2[d=4, k=1, l=@ave] - o_an[d=8, k=1, l=1]
+let/title="Oxygen [umol/L]" masked = oxy_diff * land_mask * 1e6
+sha/palette=light_centered/lev=(-inf)(-40,40,2)(inf) masked
+frame/file=$2_$3_difference_o2.gif
+
+
+!! dpCO2 - model run + obs (addition as obs data is inverted) !!
+let dpco2_diff = dpCO2[d=2, l=1:12@ave] + dpCO2[d=9, l=1:12@ave]
+let/title="dpCO2 [ppm]" masked = dpco2_diff * land_mask
+sha/palette=light_centered/lev=(-inf)(-100,100,5)(inf) masked
+frame/file=$2_$3_difference_dpco2.gif
+
+
+!! PHYSICS !!
+! Temperature
+let tmp = tos[d=3, l=@ave] - t_CT[d=10, k=1, l=1]
+let/title="Sea surface temperature [degC]" masked = tmp * land_mask
+sha/palette=light_centered/lev=(-inf)(-5,5,0.25)(inf) masked
+frame/file=$2_$3_difference_temp.gif
+
+! Salinity
+let salin = sos[d=3, l=@ave] - s_an_gkg[d=11, k=1, l=1]
+let/title="Sea surface salinity [1e-3]" masked = salin * land_mask
+sha/palette=light_centered/lev=(-inf)(-5,5,0.25)(inf) masked
+frame/file=$2_$3_difference_salin.gif
+
+
+!! TCHL !!
+let tchl_diff = tchl[d=2, k=1, l=1:12@ave] * 1e6 - tchl[d=12, l=1:12@ave]
+let/title="Total chlorophyll [ug Chl/L]" masked = tchl_diff * land_mask
+sha/palette=light_centered/lev=(-inf)(-2,2,0.1)(inf) masked
+frame/file=$2_$3_difference_tchl.gif

@@ -1,0 +1,100 @@
+!! ANNUAL MEAN MAPS FERRET SCRIPT !!
+
+! FERRET script for creating annual mean maps for the last year of the run
+! The first parameter passed to the script is the directory, second is the run identifier, third is the year
+
+use /gpfs/data/greenocean/software/resources/breakdown/basin_mask.nc
+use ($1)/($2)/ORCA2_1m_($3)0101_($3)1231_diad_T.nc
+use ($1)/($2)/ORCA2_1m_($3)0101_($3)1231_ptrc_T.nc
+use ($1)/($2)/ORCA2_1m_($3)0101_($3)1231_grid_T.nc
+
+let land_mask = IF area[d=1] GT 0 THEN 1
+
+!! ECOSYSTEM !!
+! CFLX
+let c_flx = Cflx[d=2, l=@ave]
+let/title="Surface Cflx [umol/m2/s]" masked = c_flx * land_mask * 1e6 
+sha/palette=light_centered/lev=(-inf)(-0.2,0.2,0.01)(inf) masked
+frame/file=$2_$3_cflx.gif
+
+! CHL 
+let chl_ave = tchl[d=2, k=1, l=@ave]
+let/title="Total surface chlorophyll [ug Chl/L]" masked = chl_ave * land_mask * 1e6 
+sha/palette=rainbow_cmyk/lev=(0,1.2,0.05)(inf) masked
+frame/file=$2_$3_tchl.gif
+
+! PP INTEGRATED
+let pp_int = PPINT[d=2, l=@ave]
+let/title="Integrated primary production [umol/m2/s]" masked = pp_int * land_mask * 1e6 
+sha/palette=rainbow_cmyk/lev=(0,2,0.05)(inf) masked
+frame/file=$2_$3_ppint.gif
+
+! EXPORT
+let export = EXP[d=2, k=11, l=@ave]
+let/title="Export at 100m depth [umol/m2/s]" masked = export * land_mask * 1e6 
+sha/palette=rainbow_cmyk/lev=(0,0.2,0.005)(inf) masked
+frame/file=$2_$3_exp.gif
+
+
+!! dpCO2 !!
+let dpco2_ave = dpco2[d=2, l=@ave]
+let/title="dpCO2 [ppm]" masked = dpco2_ave * land_mask
+sha/palette=light_centered/lev=(-inf)(-100,100,10)(inf) masked
+frame/file=$2_$3_dpco2.gif
+
+
+!! NUTRIENTS !!
+! FER
+let fer_ave = Fer[d=3, k=1, l=@ave]
+let/title="Fer [nmol/L]" masked = fer_ave * land_mask * 1e9
+sha/palette=rainbow_cmyk/lev=(0,1,0.05)(inf) masked
+frame/file=$2_$3_fer.gif
+
+! NO3
+let no3_ave = NO3[d=3, k=1, l=@ave]
+let/title="NO3 [umol/L]" masked = no3_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,34,1)(inf) masked
+frame/file=$2_$3_no3.gif
+
+! PO4
+let po4_ave = PO4[d=3, k=1, l=@ave]
+let/title="PO4 [umol/L]" masked = po4_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,280,10)(inf) masked
+frame/file=$2_$3_po4.gif
+
+! Si
+let sil_ave = Si[d=3, k=1, l=@ave]
+let/title="Silica [umol/L]" masked = sil_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(0,100,5)(inf) masked
+frame/file=$2_$3_sil.gif
+
+! O2
+let oxy_ave = O2[d=3, k=1, l=@ave]
+let/title="Oxygen [umol/L]" masked = oxy_ave * land_mask * 1e6
+sha/palette=rainbow_cmyk/lev=(-inf)(200,400,10)(inf) masked
+frame/file=$2_$3_o2.gif
+
+
+!! PHYSICS !!
+! Temperature
+let tmp = tos[d=4, l=@ave]
+let/title="Sea surface temperature [degC]" masked = tmp * land_mask
+sha/palette=rainbow_cmyk/lev=(-inf)(0,36,2)(inf) masked
+frame/file=$2_$3_temp.gif
+
+! Salinity
+let salin = sos[d=4, l=@ave]
+let/title="Sea surface salinity [1e-3]" masked = salin * land_mask
+sha/palette=rainbow_cmyk/lev=(-inf)(30,40,0.5)(inf) masked
+frame/file=$2_$3_salin.gif
+
+! Mixed layer depth
+let mld_ave = mldr10_1[d=4, l=@ave]
+let/title="Mixed Layer Depth (average) [m]" masked = mld_ave * land_mask
+sha/palette=rainbow_cmyk/lev=(0,500,25)(inf) masked
+frame/file=$2_$3_mld_ave.gif
+
+let mld_max = mldr10_1[d=4, l=@max]
+let/title="Mixed Layer Depth (maximum) [m]" masked = mld_max * land_mask
+sha/palette=rainbow_cmyk/lev=(0,500,25)(inf) masked
+frame/file=$2_$3_mld_max.gif
