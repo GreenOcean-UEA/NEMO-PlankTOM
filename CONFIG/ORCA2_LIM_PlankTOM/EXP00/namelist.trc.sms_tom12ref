@@ -144,6 +144,7 @@
    rn_reszoo =     0.008 ,  0.015 ,  0.008 ,  0.0293,  0.0121,  ! respiration rate of zooplankton at 0C (1/d)
    rn_retzoo =     1.0897,  1.0748,  1.0887,  1.0654,  1.0942,  ! T dependence of zooplankton respiration (no units)
    rn_icecru =   100.0,                                         ! crustacean macrozoo growth enhancement under ice (multiplicative factor)
+   rn_holexp = 1.0  ! Holling exponent n: 0=Type I (linear), 1=Type II, 2=Type III, or any value in between
 /
 !
 !-----------------------------------------------------------------------

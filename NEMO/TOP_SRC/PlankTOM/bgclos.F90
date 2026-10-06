@@ -100,16 +100,27 @@
               graze(jm) = rn_grazoo(jm)/rjjss*rfact*tmask(ji,jj,jk)     &
      &          *tgfunc(ji,jj,jk,jpbac+jm)
 !
-! compute denominator
-              zdenom(jm) = rn_grkzoo(jm)
+! initialize denominator based on grazing formulation
+! I = g*P^n/(K^n+P^n), n = rn_holexp (0=type I, 1=type II, 2=type III)
+              IF ( rn_holexp == 0. ) THEN
+                zdenom(jm) = 1.0
+              ELSE
+                zdenom(jm) = rn_grkzoo(jm)**rn_holexp
+              ENDIF
             END DO
+!
+! compute denominator: sum of preference-weighted prey concentrations
             DO jn = 1, jpfoo
               jm = grizoo(1,jn)
               jl = grizoo(2,jn)
-              zdenom(jm) = zdenom(jm)+prfzoo(jm,jl)*trn(ji,jj,jk,jl)
+              IF ( rn_holexp /= 0. ) THEN
+                zdenom(jm) = zdenom(jm)                                   &
+     &            +(prfzoo(jm,jl)*trn(ji,jj,jk,jl))**rn_holexp
+              ENDIF
             END DO
-! 
+!
 ! Preference of zooplankton for Phyto and POC (Fasham et al. 1990)
+! Generalized Holling: I = g*Z*P^n/(K^n+P^n), n = rn_holexp
 !-----------------------------------------------------------------
 !
             DO jm = 1, jpzft
@@ -118,9 +129,14 @@
             DO jn = 1, jpfoo
               jm = grizoo(1,jn)
               jl = grizoo(2,jn)
-              grazoo(ji,jj,jk,jm,jl) = zprozoo(jm)                      &
-     &          *prfzoo(jm,jl)*cmpfoo(jl)
-! 
+              IF ( rn_holexp > 1. ) THEN
+                grazoo(ji,jj,jk,jm,jl) = zprozoo(jm)                    &
+     &            *(prfzoo(jm,jl)*cmpfoo(jl))**rn_holexp
+              ELSE
+                grazoo(ji,jj,jk,jm,jl) = zprozoo(jm)                    &
+     &            *prfzoo(jm,jl)*cmpfoo(jl)
+              ENDIF
+!
 ! total ingestion of each zooplankton
               grazoc(ji,jj,jk,jm) = grazoc(ji,jj,jk,jm)+grazoo(ji,jj,jk,jm,jl)
               grazof(ji,jj,jk,jm) = grazof(ji,jj,jk,jm)+grazoo(ji,jj,jk,jm,jl)  &

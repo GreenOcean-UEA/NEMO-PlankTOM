@@ -76,7 +76,7 @@ CONTAINS
        namelist/natriv/rn_rivdic,rn_rivdoc,rn_rivfer,rn_rivnit,rn_rivpo4,rn_rivpoc,rn_rivsil
        namelist/natfer/rn_fersol,rn_silsol,rn_sedfer,rn_scofer,rn_scmfer,rn_ligdpn,rn_ligdps,rn_ligfrn,rn_liglat,rn_ligfrs
        namelist/natpre/rn_bmsdet,rn_gbadoc,rn_gbagoc,rn_gbagon,rn_gbahoc,rn_gbapoc,rn_bmspft,rn_prfzoo
-       namelist/natzoo/nn_gonmin,nn_gonmax,nn_morsqu,nn_sizzoo,rn_ggebac,rn_ggtbac,rn_ggezoo,          &
+       namelist/natzoo/nn_gonmin,nn_gonmax,nn_morsqu,nn_sizzoo,rn_holexp,rn_ggebac,rn_ggtbac,rn_ggezoo,  &
      &                 rn_sigzoo,                                                                      &
      &                 rn_unazoo,                                                                      &
      &                 rn_grabac,rn_gramin,rn_grazoo,                                                  &
@@ -297,6 +297,8 @@ CONTAINS
      &      CALL ctl_stop('E R R O R : nn_gonmin or nn_gonmax has illegal value')
         WRITE(numout,*) ' zPFTs that feed into GON smallest, largest (nn_gonmin,nn_gonmax) =', nn_gonmin,nn_gonmax
         WRITE(numout,*) ' minimum food for grazing                             (rn_gramin) =', rn_gramin
+!
+        WRITE(numout,*) ' Holling exponent I=g*P^n/(K^n+P^n)                  (rn_holexp) =', rn_holexp
 !
         IF (nn_morsqu .EQ. 1) THEN
           WRITE(numout,*) ' square mortality GEL and CRU                         (nn_morsqu) =',nn_morsqu

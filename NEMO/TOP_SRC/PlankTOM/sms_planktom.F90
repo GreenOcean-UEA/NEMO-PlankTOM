@@ -517,6 +517,13 @@ MODULE sms_planktom
       REAL, PUBLIC, SAVE, ALLOCATABLE, DIMENSION(:,:,:)   :: obstemp,obssal
       INTEGER, PUBLIC, SAVE :: nn_biodts
 !
+! Grazing formulation option: I = g*P^n/(K^n+P^n)
+!   rn_holexp = 0: Holling type I - linear response (no saturation)
+!   rn_holexp = 1: Holling type II - saturating response
+!   rn_holexp = 2: Holling type III - sigmoidal response with low-prey refuge
+!   rn_holexp between 1 and 2: intermediate response
+      REAL, PUBLIC, SAVE :: rn_holexp = 1.0
+!
 #    if defined key_trc_dms
 !!
 !!-----------------------------------------------------------------
